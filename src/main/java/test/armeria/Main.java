@@ -11,8 +11,13 @@ public class Main {
 			.https(8443)
 			.tlsSelfSigned()
 			.service("/", (ctx, req) -> HttpResponse.of("Hello Armeria!"))
+			.service("/hello/:name", Main::helloName)
 			.build();
 		
 		server.start();
+	}
+	
+	private static HttpResponse helloName(ServiceRequestContext ctx, HttpRequest req) {
+		return HttpResponse.of("Hello, %s", ctx.pathParam("name"));
 	}
 }
